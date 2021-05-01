@@ -12,6 +12,7 @@ context('Tests related to existance of user', () => {
         var user = users.user[3]
         user.username = user.username + Math.random() // assuming that app's DB isn't rolled back every time tests are executed
         registerUser(user)
+        cy.get('#registration-message').should('contain', 'Registration and login successful.')
         assertUserLoggedIn(user)
     })
 
@@ -19,6 +20,7 @@ context('Tests related to existance of user', () => {
         var user = users.user[3]
         user.username = user.username + Math.random() // assuming that app's DB isn't rolled back every time tests are executed
         registerUser(user)
+        cy.get('#registration-message').should('contain', 'Registration and login successful.')
         assertUserLoggedIn(user)
         cy.get('#logout').click()
         assertUserNotLoggedIn()
@@ -26,23 +28,28 @@ context('Tests related to existance of user', () => {
         assertUserLoggedIn(user)
     })
 
-    it('User should not be able to use existing username name', () => {
-        throw 'TODO: Fill the test'
+    it('User should not be able to use existing username', () => {
+        var user = users.user[0]
+        registerUser(user)
+        cy.get('#registration-message').get('.alert-danger').should('exist')
     })
 
-    it('Registration of already existing username should not show Internal Server Error', () => {
-        throw 'TODO: Fill the test'
+    it.only('Registration of already existing username should show some meaningful message', () => {
+        var user = users.user[0]
+        registerUser(user)
+        cy.get('#registration-message').get('.alert-danger')
+            .should('contain', 'Username already exists')
+            .and('not.contain', 'Internal Server Error')
     })
 
     function registerUser(user) {
         cy.get('#register').click()
-        cy.get('#register-username-modal').type(user.username)
+        cy.get('#register-username-modal').click().type(user.username)
         cy.get('#register-first-modal').type(user.firstname)
         cy.get('#register-last-modal').type(user.lastname)
         cy.get('#register-email-modal').type(user.email)
         cy.get('#register-password-modal').type(user.password)
         cy.get('.btn').contains('Register').click()
-        cy.contains('Registration and login successful.').should('exist')
     }
 
     function assertUserLoggedIn(user) {

@@ -4,7 +4,8 @@
             "username": "user",
             "password": "password",
             "firstname": "User",
-            "lastname": "Name"
+            "lastname": "Name",
+            "email": "user@example.com"
         },
         {
             "username": "user1",
