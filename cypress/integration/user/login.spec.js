@@ -9,7 +9,7 @@ context('Tests related to existance of user', () => {
 
     it('User should login by login button click', () => {
         const user = users.user[0]
-        openModalAndFillLoginData(user.login, user.password)
+        openModalAndFillLoginData(user.username, user.password)
         cy.contains('Log in').click()
         cy.contains('Login successful.').should('exist')
         assertUserLoggedIn(user)
@@ -17,7 +17,7 @@ context('Tests related to existance of user', () => {
 
     it('User should login by hitting enter in password modal', () => {
         const user = users.user[1]
-        openModalAndFillLoginData(user.login, user.password)
+        openModalAndFillLoginData(user.username, user.password)
         cy.get('#password-modal').type('{enter}')
         cy.contains('Login successful.').should('exist')
         assertUserLoggedIn(user)
@@ -25,7 +25,7 @@ context('Tests related to existance of user', () => {
 
     it('User should not login with incorrect password', () => {
         const user = users.user[0]
-        openModalAndFillLoginData(user.login, 'incorrectpassword')
+        openModalAndFillLoginData(user.username, 'incorrectpassword')
         cy.contains('Log in').click()
         cy.contains('Invalid login credentials.').should('exist')
         assertUserNotLoggedIn()
@@ -41,7 +41,7 @@ context('Tests related to existance of user', () => {
 
     it('User should be logged out after logout button click', () => {
         const user = users.user[2]
-        cy.login(user.login, user.password)
+        cy.login(user.username, user.password)
         assertUserLoggedIn(user)
         cy.get('#logout').click()
         assertUserNotLoggedIn()
@@ -55,11 +55,11 @@ context('Tests related to existance of user', () => {
 
     function assertUserLoggedIn(user) {
         cy.get('#logout').should('exist')
-        cy.contains('Logged in as').should('contain', user.firstname + ' ' + user.lastname)
+        cy.get('#howdy').should('contain', user.firstname + ' ' + user.lastname)
     }
 
     function assertUserNotLoggedIn() {
         cy.get('#logout').should('not.exist')
-        cy.contains('Logged in as').should('not.exist')
+        cy.get('#howdy').should('not.exist')
     }
 })

@@ -1,25 +1,25 @@
 {
     "user": [
         {
-            "login": "user",
+            "username": "user",
             "password": "password",
             "firstname": "User",
             "lastname": "Name"
         },
         {
-            "login": "user1",
+            "username": "user1",
             "password": "password",
             "firstname": "User1",
             "lastname": "Name1"
         },
         {
-            "login": "Eve_Berger",
+            "username": "Eve_Berger",
             "password": "eve",
             "firstname": "Eve",
             "lastname": "Berger"
         },
         {
-            "login": "hfowler",
+            "username": "hfowler",
             "password": "hfowler",
             "firstname": "Harper",
             "lastname": "Fowler",

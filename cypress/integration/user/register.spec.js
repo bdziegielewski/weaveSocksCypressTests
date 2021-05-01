@@ -10,28 +10,33 @@ context('Tests related to existance of user', () => {
 
     it('New user should register and logged in successfully', () => {
         var user = users.user[3]
-        user.login = user.login + Math.random() // assuming that app's DB isn't rolled back every time tests are executed
+        user.username = user.username + Math.random() // assuming that app's DB isn't rolled back every time tests are executed
         registerUser(user)
         assertUserLoggedIn(user)
     })
 
-    it.only('New registered user can login successfully after logout', () => {
+    it('New registered user can login successfully after logout', () => {
         var user = users.user[3]
-        user.login = user.login + Math.random() // assuming that app's DB isn't rolled back every time tests are executed
+        user.username = user.username + Math.random() // assuming that app's DB isn't rolled back every time tests are executed
         registerUser(user)
         assertUserLoggedIn(user)
         cy.get('#logout').click()
-        cy.login(user.login, user.password)
+        assertUserNotLoggedIn()
+        cy.login(user.username, user.password)
         assertUserLoggedIn(user)
     })
 
-    it('User should not be able to use existing login name', () => {
+    it('User should not be able to use existing username name', () => {
+        throw 'TODO: Fill the test'
+    })
+
+    it('Registration of already existing username should not show Internal Server Error', () => {
         throw 'TODO: Fill the test'
     })
 
     function registerUser(user) {
         cy.get('#register').click()
-        cy.get('#register-username-modal').type(user.login)
+        cy.get('#register-username-modal').type(user.username)
         cy.get('#register-first-modal').type(user.firstname)
         cy.get('#register-last-modal').type(user.lastname)
         cy.get('#register-email-modal').type(user.email)
@@ -42,11 +47,11 @@ context('Tests related to existance of user', () => {
 
     function assertUserLoggedIn(user) {
         cy.get('#logout').should('exist')
-        cy.contains('Logged in as').should('contain', user.firstname + ' ' + user.lastname)
+        cy.get('#howdy').should('contain', user.firstname + ' ' + user.lastname)
     }
 
     function assertUserNotLoggedIn() {
         cy.get('#logout').should('not.exist')
-        cy.contains('Logged in as').should('not.exist')
+        cy.get('#howdy').should('not.exist')
     }
 })
