@@ -22,7 +22,8 @@
             "login": "hfowler",
             "password": "hfowler",
             "firstname": "Harper",
-            "lastname": "Fowler"
+            "lastname": "Fowler",
+            "email": "harper.fowler@example.com"
         }
     ]
 }
