@@ -1,8 +1,7 @@
 context('Tests related to existance of user', () => {
     var users
     beforeEach(() => {
-        cy.pcVisitHomepage();
-        // cy.fixture('users.json').as('users')
+        cy.pcVisitHomepage()
         cy.fixture('users.json').then((data) => {
             users = data
         })

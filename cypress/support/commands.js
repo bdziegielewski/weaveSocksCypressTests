@@ -28,10 +28,18 @@ Cypress.Commands.add('pcVisitHomepage', () => {
     cy.visit('/')
 })
 
-Cypress.Commands.add('login', (login, password) => {
-    cy.log('Logging in as ' + login)
+Cypress.Commands.add('login', (username, password) => {
+    cy.log('Logging in as ' + username)
     cy.get('#login').click()
-    cy.get('#username-modal').click().type(login)
+    cy.waitFor('#username-modal') 
+    cy.get('#username-modal').click().type(username)
     cy.get('#password-modal').click().type(password).type('{enter}')
     cy.get('#logout').should('exist')
+})
+
+Cypress.Commands.add('getUserOrdersQuantity', () => {
+    cy.request('/orders').its('body').then((body) => {
+        const orders = JSON.parse(body)
+        return orders.length
+    })
 })
