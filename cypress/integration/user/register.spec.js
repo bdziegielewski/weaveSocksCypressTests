@@ -34,12 +34,12 @@ context('Tests related to existance of user', () => {
         cy.get('#registration-message').get('.alert-danger').should('exist')
     })
 
-    it('Registration of already existing username should show some meaningful message', () => {
+    it.only('Registration of already existing username should show some meaningful message', () => {
         var user = users.user[0]
         registerUser(user)
         cy.get('#registration-message').get('.alert-danger')
-            .should('contain', 'Username already exists')
-            .and('not.contain', 'Internal Server Error')
+            .should('not.contain', 'Internal Server Error')
+            .and('contain', 'Username already exists') // suggestion
     })
 
     function registerUser(user) {
