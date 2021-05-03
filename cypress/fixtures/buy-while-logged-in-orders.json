@@ -5,7 +5,8 @@
                 "name" : "SuperSport XL",
                 "quantity" : 1
             }
-        ]
+        ],
+        "shippingCost" : 4.99
     },
     {
         "products" : [
@@ -21,6 +22,7 @@
                 "name": "Colourful",
                 "quantity": 1
             }
-        ]
+        ],
+        "shippingCost" : 4.99
     }
 ]
