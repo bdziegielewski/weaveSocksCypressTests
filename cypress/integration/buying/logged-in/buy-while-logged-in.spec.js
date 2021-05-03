@@ -63,9 +63,11 @@ context('Basic tests of buying while beeing logged in', () => {
 
     function prepareOrderData() {
         var produkt1 = product("lalala", 13, 2)
-        var produkt2 = product("lalala2", 3, 2)
+        var produkt2 = product("lalala2", 3, 1)
         cy.log(produkt1.name + ' ' + produkt1.totalPrice())
-        var myOrder = order([produkt1, produkt2])
+        var myOrder = order()
+        myOrder.push(produkt1)
+        myOrder.push(produkt2)
         cy.log('order: ' + myOrder.totalPrice())
 
     }
@@ -73,9 +75,19 @@ context('Basic tests of buying while beeing logged in', () => {
     function order(products) {
         return {
             products,
+            push(product) {
+                if (products == null) {
+                    products = []
+                }
+                products.push(product)
+            },
             totalPrice() {
-                
+                var totalPrice = 0;
+                for (var i = 0; i < products.length; i++) {
+                    totalPrice+=products[i].totalPrice()
+                }
                 // return products.forEach(totalPrice())
+                return totalPrice
             }  
         }
     }
