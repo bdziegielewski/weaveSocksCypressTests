@@ -1,4 +1,4 @@
-context('Tests related to existance of user', () => {
+context('Tests related to logging in by user', () => {
     var users
     beforeEach(() => {
         cy.pcVisitHomepage();
@@ -8,7 +8,7 @@ context('Tests related to existance of user', () => {
     })
 
     it('User should login by login button click', () => {
-        const user = users.user[0]
+        const user = users[0]
         openModalAndFillLoginData(user.username, user.password)
         cy.contains('Log in').click()
         cy.contains('Login successful.').should('exist')
@@ -16,7 +16,7 @@ context('Tests related to existance of user', () => {
     })
 
     it('User should login by hitting enter in password modal', () => {
-        const user = users.user[1]
+        const user = users[1]
         openModalAndFillLoginData(user.username, user.password)
         cy.get('#password-modal').type('{enter}')
         cy.contains('Login successful.').should('exist')
@@ -24,7 +24,7 @@ context('Tests related to existance of user', () => {
     })
 
     it('User should not login with incorrect password', () => {
-        const user = users.user[0]
+        const user = users[0]
         openModalAndFillLoginData(user.username, 'incorrectpassword')
         cy.contains('Log in').click()
         cy.contains('Invalid login credentials.').should('exist')
@@ -32,7 +32,7 @@ context('Tests related to existance of user', () => {
     })
 
     it('Non existing user should not login', () => {
-        const user = users.user[0]
+        const user = users[0]
         openModalAndFillLoginData('nonexistinguser', user.password)
         cy.contains('Log in').click()
         cy.contains('Invalid login credentials.').should('exist')
@@ -40,7 +40,7 @@ context('Tests related to existance of user', () => {
     })
 
     it('User should be logged out after logout button click', () => {
-        const user = users.user[2]
+        const user = users[2]
         cy.login(user.username, user.password)
         assertUserLoggedIn(user)
         cy.get('#logout').click()

@@ -5,8 +5,8 @@ context('Basic tests of buying while beeing logged in', () => {
     var orders
 
     before(() => {
-        cy.fixture('users.json').then((data) => {
-            currentUser = data.user[1]
+        cy.fixture('users.json').then((users) => {
+            currentUser = users[1]
         })
         cy.fixture('products.json').then((data) => {
             products = data

@@ -1,30 +1,28 @@
-{
-    "user": [
-        {
-            "username": "user",
-            "password": "password",
-            "firstname": "User",
-            "lastname": "Name",
-            "email": "user@example.com"
-        },
-        {
-            "username": "user1",
-            "password": "password",
-            "firstname": "User1",
-            "lastname": "Name1"
-        },
-        {
-            "username": "Eve_Berger",
-            "password": "eve",
-            "firstname": "Eve",
-            "lastname": "Berger"
-        },
-        {
-            "username": "hfowler",
-            "password": "hfowler",
-            "firstname": "Harper",
-            "lastname": "Fowler",
-            "email": "harper.fowler@example.com"
-        }
-    ]
-}
+[
+    {
+        "username": "user",
+        "password": "password",
+        "firstname": "User",
+        "lastname": "Name",
+        "email": "user@example.com"
+    },
+    {
+        "username": "user1",
+        "password": "password",
+        "firstname": "User1",
+        "lastname": "Name1"
+    },
+    {
+        "username": "Eve_Berger",
+        "password": "eve",
+        "firstname": "Eve",
+        "lastname": "Berger"
+    },
+    {
+        "username": "hfowler",
+        "password": "hfowler",
+        "firstname": "Harper",
+        "lastname": "Fowler",
+        "email": "harper.fowler@example.com"
+    }
+]

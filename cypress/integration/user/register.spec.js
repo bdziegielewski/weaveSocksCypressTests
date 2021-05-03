@@ -1,4 +1,4 @@
-context('Tests related to existance of user', () => {
+context('Tests related to registration of user', () => {
     var users
     beforeEach(() => {
         cy.pcVisitHomepage()
@@ -8,7 +8,7 @@ context('Tests related to existance of user', () => {
     })
 
     it('New user should register and logged in successfully', () => {
-        var user = users.user[3]
+        var user = users[3]
         user.username = user.username + Math.random() // assuming that app's DB isn't rolled back every time tests are executed
         registerUser(user)
         cy.get('#registration-message').should('contain', 'Registration and login successful.')
@@ -16,7 +16,7 @@ context('Tests related to existance of user', () => {
     })
 
     it('New registered user can login successfully after logout', () => {
-        var user = users.user[3]
+        var user = users[3]
         user.username = user.username + Math.random() // assuming that app's DB isn't rolled back every time tests are executed
         registerUser(user)
         cy.get('#registration-message').should('contain', 'Registration and login successful.')
@@ -28,13 +28,13 @@ context('Tests related to existance of user', () => {
     })
 
     it('User should not be able to use existing username', () => {
-        var user = users.user[0]
+        var user = users[0]
         registerUser(user)
         cy.get('#registration-message').get('.alert-danger').should('exist')
     })
 
-    it.only('Registration of already existing username should show some meaningful message', () => {
-        var user = users.user[0]
+    it('Registration of already existing username should show some meaningful message', () => {
+        var user = users[0]
         registerUser(user)
         cy.get('#registration-message').get('.alert-danger')
             .should('not.contain', 'Internal Server Error')
@@ -43,7 +43,8 @@ context('Tests related to existance of user', () => {
 
     function registerUser(user) {
         cy.get('#register').click()
-        cy.get('#register-username-modal').click().type(user.username)
+        cy.wait(500) // I was forced to use it because losing characters on username input
+        cy.get('#register-username-modal').type(user.username)
         cy.get('#register-first-modal').type(user.firstname)
         cy.get('#register-last-modal').type(user.lastname)
         cy.get('#register-email-modal').type(user.email)
