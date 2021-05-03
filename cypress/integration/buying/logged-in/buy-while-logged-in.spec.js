@@ -1,13 +1,24 @@
 context('Basic tests of buying while beeing logged in', () => {
     var currentUser
     var previousUserOrdersQuantity
-    beforeEach(() => {
-        cy.clearCookies()
-        cy.pcVisitHomepage()
+    var products
+    var orders
+
+    before(() => {
         cy.fixture('users.json').then((data) => {
-            var currentUser = data.user[0]
-            cy.login(currentUser.username, currentUser.password)
+            currentUser = data.user[0]
         })
+        cy.fixture('products.json').then((data) => {
+            products = data
+        })
+        cy.fixture('buy-while-logged-in-orders.json').then((data) => {
+            orders = data
+        })
+    })
+
+    beforeEach(() => {
+        cy.pcVisitHomepage()
+        cy.login(currentUser.username, currentUser.password)
         cy.getUserOrdersQuantity().then((value) => {
             previousUserOrdersQuantity = value
         })
@@ -22,30 +33,32 @@ context('Basic tests of buying while beeing logged in', () => {
         checkIfUserOrdersQuantityChangedByOne()
     })
 
-    it('Verify placed order', () => {
+    it.only('Verify placed order', () => {
+        var currentOrder = orders[0]
         cy.get('.dropdown-toggle').contains('Catalogue').click()
-        cy.log('Adding to cart: 3x Figueroa')
-        for (var i = 0; i < 3; i++) {
-            cy.waitFor('.pages')
-            cy.get('.product').contains('Figueroa').parents('.text').contains('Add to cart').click()
-        }
-        cy.log('Adding to cart: 2x Crossed')
-        for (var i = 0; i < 2; i++) {
-            cy.waitFor('.pages')
-            cy.get('.product').contains('Crossed').parents('.text').contains('Add to cart').click()
-        }
-        cy.log('Adding to cart: 1x Colourful')
-        cy.waitFor('.pages')
-        cy.get('.product').contains('Colourful').parents('.text').contains('Add to cart').click()
+        currentOrder.products.forEach(addToCart)
+
+
+        cy.wait(60 * 1000)
 
         // goToBasketAndPlaceOrder()
         checkIfUserOrdersQuantityChangedByOne()
     })
 
-    it.only('temp', () => {
+    it('temp', () => {
         cy.log('users orders ' + previousUserOrdersQuantity)
         prepareOrderData()
     })
+
+    function addToCart(product) {
+        cy.log('Adding to cart: ' + product.quantity + 'x ' + product.name)
+        for (var i = 0; i < product.quantity; i++) {
+            cy.get('.product').contains(product.name).parents('.text').contains('Add to cart').then((element) => {
+                element.click()
+            })
+
+        }
+    }
 
     function goToBasketAndPlaceOrder() {
         cy.waitFor('#basket-overview') // because of detaching element from DOM
