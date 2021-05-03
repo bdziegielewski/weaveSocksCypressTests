@@ -43,7 +43,7 @@ context('Tests related to registration of user', () => {
 
     function registerUser(user) {
         cy.get('#register').click()
-        cy.wait(500) // I was forced to use it because losing characters on username input
+        cy.wait(500) // I was forced to use it because losing characters on username input - TODO: delete it after finding better solution
         cy.get('#register-username-modal').type(user.username)
         cy.get('#register-first-modal').type(user.firstname)
         cy.get('#register-last-modal').type(user.lastname)
