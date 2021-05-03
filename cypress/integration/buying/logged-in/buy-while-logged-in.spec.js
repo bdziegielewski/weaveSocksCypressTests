@@ -75,6 +75,14 @@ context('Basic tests of buying while beeing logged in', () => {
         product("Holy", 1).then((prod) => {
             cy.log('price for holly in prod: ' + prod.price)
         })
+
+        // order([product("Holy", 1), product("Crossed", 2)]).then((myOrder) => {
+        //     cy.log('order: ' + myOrder.totalPrice())
+        // })
+        var myOrder = order([product("Holy", 1), product("Crossed", 2)])
+        cy.log('total order price ' + myOrder.totalPrice())
+
+
         // var produkt1 = product("Figueroa", 2)
         // expect(produkt1.name).eq(30)
         // var myOrder = order([product("Figueroa", 2)])
@@ -96,7 +104,7 @@ context('Basic tests of buying while beeing logged in', () => {
             totalPrice() {
                 var totalPrice = 0;
                 for (var i = 0; i < products.length; i++) {
-                    totalPrice += products[i].totalPrice()
+                    totalPrice += products[i].totalPrice
                 }
                 return totalPrice
             }
@@ -109,12 +117,9 @@ context('Basic tests of buying while beeing logged in', () => {
                 name,
                 price,
                 quantity,
-                totalPrice() {
-                    return price * quantity
-                }
+                totalPrice: price * quantity
             }
         })
-
     }
 
     function getPriceForProduct(name) {
