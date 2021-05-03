@@ -22,7 +22,7 @@ context('Basic tests of buying while beeing logged in', () => {
         checkIfUserOrdersQuantityChangedByOne()
     })
 
-    it.only('Verify placed order', () => {
+    it('Verify placed order', () => {
         cy.get('.dropdown-toggle').contains('Catalogue').click()
         cy.log('Adding to cart: 3x Figueroa')
         for (var i = 0; i < 3; i++) {
@@ -42,6 +42,10 @@ context('Basic tests of buying while beeing logged in', () => {
         checkIfUserOrdersQuantityChangedByOne()
     })
 
+    it.only('temp', () => {
+        prepareOrderData()
+    })
+
     function goToBasketAndPlaceOrder() {
         cy.waitFor('#basket-overview') // because of detaching element from DOM
         cy.get('#basket-overview').click()
@@ -55,6 +59,36 @@ context('Basic tests of buying while beeing logged in', () => {
             cy.log('Orders after test: ' + currentOrdersQuantity)
             expect(currentOrdersQuantity).equal(previousUserOrdersQuantity + 1)
         })
+    }
+
+    function prepareOrderData() {
+        var produkt1 = product("lalala", 13, 2)
+        var produkt2 = product("lalala2", 3, 2)
+        cy.log(produkt1.name + ' ' + produkt1.totalPrice())
+        var myOrder = order([produkt1, produkt2])
+        cy.log('order: ' + myOrder.totalPrice())
+
+    }
+
+    function order(products) {
+        return {
+            products,
+            totalPrice() {
+                
+                // return products.forEach(totalPrice())
+            }  
+        }
+    }
+
+    function product(name, price, quantity) {
+        return {
+            name,
+            price,
+            quantity,
+            totalPrice() {
+                return price * quantity
+            }   
+        };
     }
 })
 
