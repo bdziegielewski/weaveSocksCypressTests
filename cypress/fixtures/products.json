@@ -1,0 +1,47 @@
+[
+    {
+        "name": "Holy",
+        "price": 99.99,
+        "count": 1
+    },
+    {
+        "name": "Colourful",
+        "price": 18,
+        "count": 438
+    },
+    {
+        "name": "SuperSport XL",
+        "price": 15,
+        "count": 820
+    },
+    {
+        "name": "Crossed",
+        "price": 17.32,
+        "count": 738
+    },
+    {
+        "name": "Figueroa",
+        "price": 14,
+        "count": 808
+    },
+    {
+        "name": "Cat socks",
+        "price": 15,
+        "count": 175
+    },
+    {
+        "name": "Nerd leg",
+        "price": 7.99,
+        "count": 115
+    },
+    {
+        "name": "YouTube.sock",
+        "price": 10.99,
+        "count": 801
+    },
+    {
+        "name": "Classic",
+        "price": 12,
+        "count": 127
+    }
+]
