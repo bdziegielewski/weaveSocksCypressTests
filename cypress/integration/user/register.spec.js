@@ -38,7 +38,7 @@ context('Tests related to registration of user', () => {
         registerUser(user)
         cy.get('#registration-message').get('.alert-danger')
             .should('not.contain', 'Internal Server Error')
-            .and('contain', 'Username already exists') // suggestion
+            .and('contain', 'Username already exists') // That's only a suggestion TODO: change expected message after fix
     })
 
     function registerUser(user) {

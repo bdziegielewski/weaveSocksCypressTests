@@ -29,7 +29,7 @@ Cypress.Commands.add('pcVisitHomepage', () => {
 })
 
 Cypress.Commands.add('login', (username, password) => {
-    cy.log('Logging in as ' + username)
+    cy.log('Logging in as: ' + username)
     cy.get('#login').click()
     cy.wait(500) // I was forced to use it because losing characters on username input - TODO: delete it after finding better solution
     cy.get('#username-modal').click().type(username)
