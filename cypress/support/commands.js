@@ -31,7 +31,6 @@ Cypress.Commands.add('pcVisitHomepage', () => {
 Cypress.Commands.add('login', (username, password) => {
     cy.log('Logging in as ' + username)
     cy.get('#login').click()
-    cy.waitFor('#username-modal') 
     cy.get('#username-modal').click().type(username)
     cy.get('#password-modal').click().type(password).type('{enter}')
     cy.get('#logout').should('exist')
