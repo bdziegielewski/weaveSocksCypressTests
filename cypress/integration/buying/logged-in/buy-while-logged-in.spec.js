@@ -6,7 +6,7 @@ context('Basic tests of buying while beeing logged in', () => {
 
     before(() => {
         cy.fixture('users.json').then((data) => {
-            currentUser = data.user[0]
+            currentUser = data.user[1]
         })
         cy.fixture('products.json').then((data) => {
             products = data
@@ -21,6 +21,7 @@ context('Basic tests of buying while beeing logged in', () => {
         cy.login(currentUser.username, currentUser.password)
         cy.getUserOrdersQuantity().then((value) => {
             previousUserOrdersQuantity = value
+            cy.log('PREV ORD COUNT: '+value)
         })
     })
 
@@ -39,7 +40,8 @@ context('Basic tests of buying while beeing logged in', () => {
         cy.get('.dropdown-toggle').contains('Catalogue').click()
         addOrderToCart(currentOrder)
         goToBasket()
-        validateAndPlaceOrder()
+        validateAndPlaceOrder(currentOrder)
+        cy.get('#customer-orders').should('exist')
         checkIfUserOrdersQuantityChangedByOne()
     })
 
@@ -55,13 +57,15 @@ context('Basic tests of buying while beeing logged in', () => {
     }
 
     function goToBasket() {
-        cy.get('#basket-overview').then((element) => {
-            element.click()
-        })
+        cy.wait(500) // I was forced to use it because of DOM detachment issue TODO: delete and find better solution
+        cy.get('#basket-overview').contains('item(s) in cart').click()
     }
 
-    function validateAndPlaceOrder() {
-        throw 'TODO: add order validation '
+    function validateAndPlaceOrder(order) {
+        order.products.forEach((product) => {
+            cy.log('Validating: ' + product.quantity + 'x ' + product.name)
+            cy.get('#basket').contains(product.name).parents('tr').find('.form-control').should('have.value', product.quantity)
+        })
         cy.log('Place order')
         cy.get('#orderButton').click()
     }
