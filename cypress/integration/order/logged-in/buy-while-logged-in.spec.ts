@@ -1,8 +1,22 @@
 context('Basic tests of buying while beeing logged in', () => {
-    var currentUser
-    var previousUserOrdersQuantity
-    var products
-    var orders
+    let currentUser: {
+        username: string,
+        password: string
+    }
+    let previousUserOrdersQuantity: number;
+    let products: product[];
+    let orders: order[];
+    type product = {
+        "name": string;
+        "quantity": number;
+        "price": number;
+        "count": number;
+    }
+    type order = {
+        "products": product[];
+        "shippingCost": number;
+    }
+
 
     before(() => {
         cy.fixture('users.json').then((users) => {
@@ -17,7 +31,7 @@ context('Basic tests of buying while beeing logged in', () => {
     })
 
     beforeEach(() => {
-        cy.pcVisitHomepage()
+        cy.pcVisitHomepage();
         cy.login(currentUser.username, currentUser.password)
         cy.getUserOrdersQuantity().then((value) => {
             previousUserOrdersQuantity = value
@@ -44,7 +58,7 @@ context('Basic tests of buying while beeing logged in', () => {
         checkIfUserOrdersQuantityChangedByOne()
     })
 
-    function addOrderToCart(order) {
+    function addOrderToCart(order: order) {
         order.products.forEach((product) => {
             cy.log('Adding to cart: ' + product.quantity + 'x ' + product.name)
             for (var i = 0; i < product.quantity; i++) {
@@ -56,21 +70,24 @@ context('Basic tests of buying while beeing logged in', () => {
     }
 
     function goToBasket() {
-        cy.wait(500) // I was forced to use it because of DOM detachment issue TODO: delete and find better solution
-        cy.get('#basket-overview').contains('item(s) in cart').click()
+        cy.get('#basket-overview').should("contain", "item(s) in cart").click()
     }
 
-    function validateAndPlaceOrder(order) {
+    function validateAndPlaceOrder(order: order) {
         order.products.forEach((product) => {
             cy.log('Validating: ' + product.quantity + 'x ' + product.name)
-            cy.get('#basket > div.box').contains(product.name).parents('tr').find('.form-control').should('have.value', product.quantity)
+            cy.get('#basket > div.box')
+                .contains(product.name)
+                .parents('tr')
+                .find('.form-control')
+                .should('have.value', product.quantity)
         })
         cy.log('Place order')
         cy.get('#orderButton').click()
         cy.get('#customer-orders').should('exist')
     }
 
-    function viewAndValidateOrder(order) {
+    function viewAndValidateOrder(order: order) {
         const expectedCurrentOrderNumber = previousUserOrdersQuantity + 1
         cy.get('#tableOrders > :nth-child(' + expectedCurrentOrderNumber + ')').contains('View').click()
 
@@ -98,17 +115,19 @@ context('Basic tests of buying while beeing logged in', () => {
         const orderTotal = orderSubtotal + order.shippingCost
         cy.log('Validating order total (' + formatPrice(orderTotal) + ')')
         cy.get('#orderTotal').should('have.text', formatPrice(orderTotal))
+
+        // TODO: Ofcourse it should also validate address and payment data, and it is strange that order
     }
 
-    function formatPrice(price) {
+    function formatPrice(price: number) {
         return '$' + price.toFixed(2)
     }
 
-    function getUnitPrice(productName) {
-        return products.find(p => p.name == productName).price
+    function getUnitPrice(productName: string) {
+        return products.find(p => p.name == productName)!.price
     }
 
-    function getExpectedSubtotalPriceForOrder(order) {
+    function getExpectedSubtotalPriceForOrder(order: order) {
         var totalPrice = 0
         order.products.forEach((product) => {
             totalPrice += getUnitPrice(product.name) * product.quantity
